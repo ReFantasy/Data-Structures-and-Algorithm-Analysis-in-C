@@ -15,6 +15,7 @@ SearchTree MakeEmpty(SearchTree T)
         MakeEmpty(T->right);
         free(T);
     }
+    return NULL;
 }
 
 Position Find(SearchTree T, int value)
@@ -48,4 +49,63 @@ Position FindMin(SearchTree T)
     }
 
     return T;
+}
+
+Position Insert(SearchTree T, int value)
+{
+    if(T == NULL)
+    {
+        T = (Position)malloc(sizeof(struct TreeNode));
+        T->value = value;
+        T->left = NULL;
+        T->right = NULL;
+    }
+
+    if(T->value > value)
+        T->left = Insert(T->left, value);
+    if(T->value < value)
+        T->right = Insert(T->right, value);
+
+    return T;
+}
+
+SearchTree Delete(SearchTree T, int value_to_delete)
+{
+    if(T == NULL)
+        return NULL;
+    if(T->value > value_to_delete)
+        T->left = Delete(T->left, value_to_delete);
+    else if(T->value < value_to_delete)
+        T->right = Delete(T->right, value_to_delete);
+    else if(T->right && T->left)
+    {
+        Position tmp = FindMin(T->right);
+        T->value = tmp->value;
+        T->right  = Delete(T->right, value_to_delete);
+
+    }
+    else
+    {
+        Position tmp = T;
+        if(T->left == NULL)
+        { 
+            T = T->right;
+        }
+        else
+        {
+            T = T->left;
+        }
+        free(tmp);
+    }
+    return T;
+}
+
+void MidOrderPrintTree(SearchTree T)
+{
+    if(T)
+    {
+        MidOrderPrintTree(T->left);
+        printf("%d  ", T->value);
+        MidOrderPrintTree(T->right);
+    }
 }
