@@ -109,3 +109,68 @@ void MidOrderPrintTree(SearchTree T)
         MidOrderPrintTree(T->right);
     }
 }
+
+struct AvlNode
+{
+    int value;
+    struct AvlNode* left;
+    struct AvlNode* right;
+    int height;
+};
+
+AvlTree AvlMakeEmpty(AvlTree T)
+{
+    if(T != NULL)
+    {
+        AvlMakeEmpty(T->left);
+        AvlMakeEmpty(T->right);
+        free(T);
+    }
+    return NULL;
+}
+
+int Height(AvlPosition P)
+{
+    if(P != NULL)
+        return P->height;
+    return -1;
+}
+
+AvlPosition SingleRotateWithLeft(AvlPosition k1)
+{
+    AvlPosition k2 = k1->left;
+    k1->left = k2->right;
+    k2->right = k1;
+
+    k1->height = std::max(Height(k1->left), Height(k1->right))+1;
+    k2->height = std::max(Height(k2->left), Height(k2->right))+1;
+    return k2;
+}
+
+AvlPosition SingleRotateWithRight(AvlPosition k1)
+{
+    AvlPosition k2 = k1->right;
+    k1->right = k2->left;
+    k2->right = k1;
+
+    k1->height = std::max(Height(k1->left), Height(k1->right))+1;
+    k2->height = std::max(Height(k2->left), Height(k2->right))+1;
+    return k2;
+}
+
+AvlPosition DoubleRotateWithLeft(AvlPosition k1)
+{
+    k1->left = SingleRotateWithRight(k1->left);
+    return SingleRotateWithLeft(k1);
+}
+
+AvlPosition DoubleRotateWithRight(AvlPosition k1)
+{
+    k1->right = SingleRotateWithRight(k1->left);
+    return SingleRotateWithRight(k1);
+}
+
+AvlPosition Insert(AvlTree T, int value)
+{
+    ;
+}

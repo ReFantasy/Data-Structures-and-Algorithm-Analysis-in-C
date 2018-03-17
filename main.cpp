@@ -4,7 +4,8 @@ using namespace std;
 
 int main()
 {
-    SearchTree T = MakeEmpty();
+    SearchTree T;
+    MakeEmpty(T);
     T = Insert(T, 6);
     Insert(T, 3);
     Insert(T, 8);
