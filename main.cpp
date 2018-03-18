@@ -1,20 +1,20 @@
 #include <iostream>
+#include <ctime>
 #include "./tree/tree.h"
 using namespace std;
 
 int main()
 {
-    SearchTree T;
-    MakeEmpty(T);
-    T = Insert(T, 6);
-    Insert(T, 3);
-    Insert(T, 8);
-    Insert(T, 1);
-    Insert(T, 4);
-    Insert(T, 7);
-    Insert(T, 9);
+    AvlTree T;
+    AvlMakeEmpty(T);
+    srand(time(0));
+    for(int i=0; i<20; i++)
+    {
+        T = Insert(T, rand()%100);
+    }
+    
 
-    MidOrderPrintTree(T);
+    MidOrderPrintAvlTree(T);
 
     printf("\n");
     return 0;

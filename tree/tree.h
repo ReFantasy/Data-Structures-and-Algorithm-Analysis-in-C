@@ -60,4 +60,7 @@ AvlPosition DoubleRotateWithRight(AvlPosition k1);
 
 //插入元素(如果已经存在则什么也不做),返回该元素位置
 AvlPosition Insert(AvlTree T, int value);
+
+//中序遍历
+void MidOrderPrintAvlTree(AvlTree T);
 #endif

@@ -136,14 +136,14 @@ int Height(AvlPosition P)
     return -1;
 }
 
-AvlPosition SingleRotateWithLeft(AvlPosition k1)
+AvlPosition SingleRotateWithLeft(AvlPosition k2)
 {
-    AvlPosition k2 = k1->left;
-    k1->left = k2->right;
-    k2->right = k1;
+    AvlPosition k1 = k2->left;
+    k2->left = k1->right;
+    k1->right = k2;
 
-    k1->height = std::max(Height(k1->left), Height(k1->right))+1;
     k2->height = std::max(Height(k2->left), Height(k2->right))+1;
+    k1->height = std::max(Height(k1->left), k2->height)+1;
     return k2;
 }
 
@@ -151,10 +151,10 @@ AvlPosition SingleRotateWithRight(AvlPosition k1)
 {
     AvlPosition k2 = k1->right;
     k1->right = k2->left;
-    k2->right = k1;
+    k2->left = k1;
 
     k1->height = std::max(Height(k1->left), Height(k1->right))+1;
-    k2->height = std::max(Height(k2->left), Height(k2->right))+1;
+    k2->height = std::max(k1->height, Height(k2->right))+1;
     return k2;
 }
 
@@ -166,11 +166,52 @@ AvlPosition DoubleRotateWithLeft(AvlPosition k1)
 
 AvlPosition DoubleRotateWithRight(AvlPosition k1)
 {
-    k1->right = SingleRotateWithRight(k1->left);
+    k1->right = SingleRotateWithLeft(k1->right);
     return SingleRotateWithRight(k1);
 }
 
 AvlPosition Insert(AvlTree T, int value)
 {
-    ;
+    if(T == NULL)
+    {
+        T = (AvlPosition)malloc(sizeof(struct AvlNode));
+        T->value = value;
+        T->height = 0;
+        T->left = NULL;
+        T->right = NULL;
+    }
+    else if(value < T->value)
+    {
+        T->left = Insert(T->left, value);
+        if(Height(T->left) - Height(T->right) == 2)
+        {
+            if(value < T->left->value)
+                T = SingleRotateWithLeft(T);
+            else
+                T = DoubleRotateWithLeft(T);
+        }
+    }
+    else
+    {
+        T->right = Insert(T->right, value);
+        if(Height(T->right) - Height(T->left) == 2)
+        {
+            if(value > T->right->value)
+                T = SingleRotateWithRight(T);
+            else
+                T = DoubleRotateWithRight(T);
+        }
+    }
+    T->height = std::max(Height(T->left), Height(T->right))+1;
+    return T;
+}
+
+void MidOrderPrintAvlTree(AvlTree T)
+{
+    if(T)
+    {
+        MidOrderPrintAvlTree(T->left);
+        printf("value:%d  height:%d\n", T->value, T->height);
+        MidOrderPrintAvlTree(T->right);
+    }
 }
