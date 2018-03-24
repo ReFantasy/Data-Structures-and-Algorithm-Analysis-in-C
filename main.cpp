@@ -1,21 +1,15 @@
+#include "./Introduction/introduction.h"
 #include <iostream>
-#include <ctime>
-#include "./tree/tree.h"
 using namespace std;
 
 int main()
 {
-    AvlTree T;
-    AvlMakeEmpty(T);
-    srand(time(0));
-    for(int i=0; i<20; i++)
-    {
-        T = Insert(T, rand()%100);
-    }
-    
+	vector<int> array;
+	for (int i = 0; i < 10000; i++)
+		array.push_back(rand());
 
-    MidOrderPrintAvlTree(T);
+	cout << Select_K1(array, 10) << endl;
+	cout << Select_K2(array, 10) << endl;
 
-    printf("\n");
-    return 0;
+	return 0;
 }
